@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import ReactGPT from './ReactGPT'
+import { ReactGPT } from './ReactGPT'
+
 
 import './index.css'
 
