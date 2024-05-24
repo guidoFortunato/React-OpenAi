@@ -1,7 +1,6 @@
 
 
-
-export const prosConsStreamUseCase = async (prompt: string) => {
+export async function* prosConsStreamGeneratorUseCase(prompt: string, abortSignal: AbortSignal) {
   try {
     const resp = await fetch(
       `${import.meta.env.VITE_GPT_API}/pros-cons-discusser-stream`,
@@ -11,7 +10,7 @@ export const prosConsStreamUseCase = async (prompt: string) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ prompt }),
-        // TODO abortSignal
+        signal: abortSignal,
       }
     );
 
@@ -23,28 +22,24 @@ export const prosConsStreamUseCase = async (prompt: string) => {
       return null;
     }
 
-    return reader
+    const decoder = new TextDecoder();
 
-    // const decoder = new TextDecoder();
+    let text = "";
 
-    // let text = "";
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) {
+        break;
+      }
 
-    // while (true) {
-    //   const { value, done } = await reader.read();
-    //   if (done) {
-    //     break;
-    //   }
+      const decodedChunk = decoder.decode(value, { stream: true });
 
-    //   const decodedChunk = decoder.decode(value, { stream: true });
+      text += decodedChunk;
 
-    //   text += decodedChunk
-
-    //   console.log(text)
-    // }
-
-    // let = text = ''
+      yield text;
+    }
   } catch (error) {
     console.error(error);
     return null;
   }
-};
+}
