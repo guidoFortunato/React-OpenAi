@@ -25,7 +25,7 @@ export const ProsConsPage = () => {
     setMessages((prev) => [...prev, { text: content, isGpt: true }]);
     setIsLoading(false);
 
-    // Todo: añadir el mensaje de isGPT en true
+    
   };
 
   return (
