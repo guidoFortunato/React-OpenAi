@@ -32,15 +32,13 @@ ${resp.text}
 
     setMessages((prev) => [...prev, { text: gptMessage, isGpt: true }]);
 
-    for(const segment of resp.segments){
+    for (const segment of resp.segments) {
       const segmentMessage = `
-__De ${ Math.round(segment.start) } a ${ Math.round( segment.end ) } segundos:__
+__De ${Math.round(segment.start)} a ${Math.round(segment.end)} segundos:__
 ${segment.text}
-`
+`;
       setMessages((prev) => [...prev, { text: segmentMessage, isGpt: true }]);
     }
-
-
   };
 
   return (
@@ -54,7 +52,12 @@ ${segment.text}
             message.isGpt ? (
               <GptMessage key={index} text={message.text} />
             ) : (
-              <MyMessage key={index} text={message.text === '' ? "Transcribe el audio" : message.text} />
+              <MyMessage
+                key={index}
+                text={
+                  message.text === "" ? "Transcribe el audio" : message.text
+                }
+              />
             )
           )}
 
